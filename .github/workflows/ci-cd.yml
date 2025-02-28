@@ -21,12 +21,14 @@ jobs:
 
       - name: Build and push frontend image
         run: |
-          docker build -t dhananjayakafle/app_segregation_frontend:latest ./frontend
+          cd frontend
+          docker build -t dhananjayakafle/app_segregation_frontend:latest .
           docker push dhananjayakafle/app_segregation_frontend:latest
 
       - name: Build and push backend image
         run: |
-          docker build -t dhananjayakafle/app_segregation_backend:latest ./backend
+          cd backend
+          docker build -t dhananjayakafle/app_segregation_backend:latest .
           docker push dhananjayakafle/app_segregation_backend:latest
 
   deploy-to-kubernetes:
@@ -44,7 +46,9 @@ jobs:
 
       - name: Configure kubeconfig
         run: |
+          mkdir -p $HOME/.kube
           echo "${{ secrets.KUBECONFIG }}" | base64 --decode > $HOME/.kube/config
+          chmod 600 $HOME/.kube/config
 
       - name: Deploy to Kubernetes
         run: |
