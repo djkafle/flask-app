@@ -15,6 +15,7 @@ spec:
       containers:
         - name: frontend
           image: dhananjayakafle/app_segregation_frontend:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 5000
 ---
