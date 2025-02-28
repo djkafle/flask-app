@@ -15,6 +15,7 @@ config = {
 @app.route("/")
 def home():
     return "Backend is running!"
+    # this is just let developer know im displaying something.
 
 @app.route("/submit", methods=["POST"])
 def submit():
