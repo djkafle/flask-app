@@ -47,13 +47,7 @@ jobs:
       - name: Configure kubeconfig
         run: |
           mkdir -p $HOME/.kube
-          echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
           chmod 600 $HOME/.kube/config
-
-      - name: Verify kubectl configuration
-        run: |
-          kubectl config view
-          kubectl cluster-info
 
       - name: Deploy to Kubernetes
         run: |
