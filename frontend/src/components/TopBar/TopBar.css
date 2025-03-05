@@ -1,0 +1,55 @@
+.topbar {
+  background: linear-gradient(to right, #fe9496, #9e58ff);
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  color: white;
+  font-size: 18px;
+}
+.app_name {
+  margin: 0;
+  font-weight: 400;
+  text-align: center;
+  flex-grow: 1;
+  font-size: xx-large;
+}
+
+.profile {
+  height: 40px;
+  width: 40px;
+}
+
+.profile-card {
+  background: white;
+  color: black;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.profile-details p {
+  margin: 5px 0;
+}
+
+@media (max-width: 600px) {
+  .topbar {
+    flex-direction: column;
+    height: auto;
+    padding: 10px;
+  }
+
+  .app_name {
+    font-size: 16px;
+  }
+
+  .profile {
+    height: 30px;
+    width: 30px;
+  }
+}
