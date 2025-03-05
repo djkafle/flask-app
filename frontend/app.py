@@ -3,8 +3,8 @@ import requests
 
 app = Flask(__name__)
 
-# Backend URL
-BACKEND_URL = "http://localhost:5001/submit"  # Local backend URL
+# Backend URL (use the Kubernetes service name)
+BACKEND_URL = "http://backend-service:5001/submit"  # Kubernetes backend service URL
 
 @app.route("/")
 def index():
