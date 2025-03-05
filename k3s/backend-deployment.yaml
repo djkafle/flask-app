@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: dhananjayakafle/app_segregation_backend:$(date +%s)
+          image: dhananjayakafle/app_segregation_backend:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 5001
