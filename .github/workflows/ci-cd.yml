@@ -3,7 +3,7 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - main  # Trigger on push to the main branch
+      - master  # Trigger on push to the master branch
 
 jobs:
   build-and-push:
@@ -54,7 +54,7 @@ jobs:
 
       - name: Deploy to AKS
         run: |
-          kubectl apply -f k8s/backend-deployment.yaml
-          kubectl apply -f k8s/backend-service.yaml
-          kubectl apply -f k8s/frontend-deployment.yaml
-          kubectl apply -f k8s/frontend-service.yaml
+          kubectl apply -f k3s/backend-deployment.yaml
+          kubectl apply -f k3s/backend-service.yaml
+          kubectl apply -f k3s/frontend-deployment.yaml
+          kubectl apply -f k3s/frontend-service.yaml
