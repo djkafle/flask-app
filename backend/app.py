@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, redirect, url_for
 import mysql.connector
 
 app = Flask(__name__)
@@ -33,12 +33,12 @@ def get_users():
 
 @app.route("/submit", methods=["POST"])
 def submit():
-    data = request.json
-    name = data.get("name")
-    email = data.get("email")
+    # Get form data
+    name = request.form.get("name")
+    email = request.form.get("email")
 
     if not name or not email:
-        return jsonify({"error": "Name and email are required."}), 400
+        return "Error: Name and email are required.", 400
 
     try:
         # Connect to the database
@@ -54,9 +54,30 @@ def submit():
         cursor.close()
         conn.close()
 
-        return jsonify({"message": "Data inserted successfully"}), 200
+        # Redirect to the dashboard after successful submission
+        return redirect(url_for('dashboard'))
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return f"Error: {str(e)}", 500
+
+@app.route("/dashboard")
+def dashboard():
+    try:
+        # Connect to the database
+        conn = mysql.connector.connect(**db_config)
+        cursor = conn.cursor(dictionary=True)
+
+        # Fetch all users
+        cursor.execute("SELECT * FROM users")
+        users = cursor.fetchall()
+
+        # Close the connection
+        cursor.close()
+        conn.close()
+
+        # Render the dashboard template with user data
+        return render_template("dashboard.html", users=users)
+    except Exception as e:
+        return f"Error: {str(e)}", 500
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5001, debug=True)
