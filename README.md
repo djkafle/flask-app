@@ -60,7 +60,7 @@ docker build -t your-dockerhub-username/app-segregation-database:latest .
 
 ### Run the MySQL Container Locally (Optional):
 ```bash
-docker run -d --name mysql-container -e MYSQL_ROOT_PASSWORD=rootpassword -p 3306:3306 your-dockerhub-username/app-segregation-database:latest
+docker run -d --name mysql-container -e MYSQL_ROOT_PASSWORD=rootpassword -p 3306:3306 dhananjayakafle/app-segregation-database:latest
 ```
 
 ### Initialize the Database:
@@ -78,12 +78,12 @@ source /docker-entrypoint-initdb.d/init.sql;
 ### Build the Backend Docker Image:
 ```bash
 cd ../backend
-docker build -t your-dockerhub-username/app-segregation-backend:latest .
+docker build -t dhananjayakafle/app-segregation-backend:latest .
 ```
 
 ### Run the Backend Locally (Optional):
 ```bash
-docker run -d --name backend-container -p 5001:5001 your-dockerhub-username/app-segregation-backend:latest
+docker run -d --name backend-container -p 5001:5001 dhananjayakafle/app-segregation-backend:latest
 ```
 
 ## 4. Set Up the Frontend
@@ -91,12 +91,12 @@ docker run -d --name backend-container -p 5001:5001 your-dockerhub-username/app-
 ### Build the Frontend Docker Image:
 ```bash
 cd ../frontend
-docker build -t your-dockerhub-username/app-segregation-frontend:latest .
+docker build -t dhananjayakafle/app-segregation-frontend:latest .
 ```
 
 ### Run the Frontend Locally (Optional):
 ```bash
-docker run -d --name frontend-container -p 5000:5000 your-dockerhub-username/app-segregation-frontend:latest
+docker run -d --name frontend-container -p 5000:5000 dhananjayakafle/app-segregation-frontend:latest
 ```
 
 ## 5. Deploy to Kubernetes
@@ -163,8 +163,6 @@ Contributions are welcome! Please follow these steps:
    ```
 5. Open a pull request.
 
-## License
-This project is licensed under the MIT License. See the `LICENSE` file for details.
 
 ## Acknowledgments
 - [Flask Documentation](https://flask.palletsprojects.com/)
