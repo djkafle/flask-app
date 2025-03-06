@@ -91,8 +91,8 @@
 </head>
 <body>
     <div class="container">
-        <h1>User Form</h1>
-        <form id="userForm" action="/submit" method="POST">
+        <h1>Testing Auto-Update</h1>
+        <form id="userForm">
             <label for="first_name">First Name:</label>
             <input type="text" id="first_name" name="first_name" required>
             <br>
@@ -106,35 +106,52 @@
     </div>
 
     <script>
-        // JavaScript for Form Submission Feedback
+        // JavaScript for Form Submission
         document.getElementById('userForm').addEventListener('submit', function (event) {
             event.preventDefault(); // Prevent default form submission
 
-            // Show loading state (optional)
+            // Get form data
+            const formData = {
+                first_name: document.getElementById('first_name').value,
+                last_name: document.getElementById('last_name').value,
+            };
+
+            // Show loading state
             const submitButton = document.querySelector('button');
             submitButton.textContent = 'Submitting...';
             submitButton.disabled = true;
 
-            // Simulate form submission (replace with actual fetch/AJAX call)
-            setTimeout(() => {
-                // Simulate success or error
-                const isSuccess = Math.random() > 0.5;
-
-                if (isSuccess) {
+            // Send data to the backend using fetch
+            fetch('/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    // Show success message
                     document.getElementById('successMessage').style.display = 'block';
                     document.getElementById('errorMessage').style.display = 'none';
                 } else {
+                    // Show error message
                     document.getElementById('errorMessage').style.display = 'block';
                     document.getElementById('successMessage').style.display = 'none';
                 }
-
-                // Reset button
+            })
+            .catch(error => {
+                // Show error message
+                document.getElementById('errorMessage').style.display = 'block';
+                document.getElementById('successMessage').style.display = 'none';
+            })
+            .finally(() => {
+                // Reset button and form
                 submitButton.textContent = 'Submit';
                 submitButton.disabled = false;
-
-                // Clear form fields
                 document.getElementById('userForm').reset();
-            }, 1000); // Simulate network delay
+            });
         });
     </script>
 </body>
