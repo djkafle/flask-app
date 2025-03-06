@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: database
+  template:
+    metadata:
+      labels:
+        app: database
+    spec:
+      containers:
+      - name: mysql
+        image: dhananjayakafle/app_segregation_database:latest
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: rootpassword
+        - name: MYSQL_DATABASE
+          value: sql_database
+        - name: MYSQL_USER
+          value: sqluser
+        - name: MYSQL_PASSWORD
+          value: sqlpassword
+        ports:
+        - containerPort: 3306

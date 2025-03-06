@@ -5,17 +5,16 @@ app = Flask(__name__)
 
 # Database connection details
 config = {
-    'user': 'sql5764936',
-    'password': 'pmHq9bKzsi',
-    'host': 'sql5.freesqldatabase.com',
-    'database': 'sql5764936',
+    'user': 'sqluser',
+    'password': 'sqlpassword',
+    'host': 'database-service',  # Kubernetes service name
+    'database': 'sql_database',
     'port': '3306'  # Default MySQL port
 }
 
 @app.route("/")
 def home():
     return "Backend is running!"
-    # this is just let developer know im displaying something.
 
 @app.route("/submit", methods=["POST"])
 def submit():
