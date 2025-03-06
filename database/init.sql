@@ -1,0 +1,9 @@
+CREATE DATABASE IF NOT EXISTS sql_database;
+USE sql_database;
+
+CREATE TABLE IF NOT EXISTS users (
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  first_name VARCHAR(50) NOT NULL,
+  last_name VARCHAR(50) NOT NULL,
+  PRIMARY KEY (id)
+);
