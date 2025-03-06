@@ -24,11 +24,19 @@ jobs:
           cd frontend
           docker build -t dhananjayakafle/app_segregation_frontend:latest .
           docker push dhananjayakafle/app_segregation_frontend:latest
+
       - name: Build and push backend image
         run: |
           cd backend
           docker build -t dhananjayakafle/app_segregation_backend:latest .
           docker push dhananjayakafle/app_segregation_backend:latest
+
+      - name: Build and push database image
+        run: |
+          cd database
+          docker build -t dhananjayakafle/app_segregation_database:latest .
+          docker push dhananjayakafle/app_segregation_database:latest
+
   deploy-to-aks:
     runs-on: ubuntu-latest
     needs: build-and-push
@@ -45,16 +53,20 @@ jobs:
       - name: Install kubectl
         run: |
           az aks install-cli
+
       - name: Get AKS credentials
         run: |
           az aks get-credentials --resource-group TermProject --name termCluster --overwrite-existing
+
       - name: Deploy to AKS
         run: |
+          kubectl apply -f k3s/database-deployment.yaml
+          kubectl apply -f k3s/database-service.yaml
           kubectl apply -f k3s/backend-deployment.yaml
           kubectl apply -f k3s/backend-service.yaml
           kubectl apply -f k3s/frontend-deployment.yaml
           kubectl apply -f k3s/frontend-service.yaml
-          
+
       - name: Restart deployments to pull new images
         run: |
           kubectl rollout restart deployment/backend
