@@ -204,12 +204,14 @@ node_load1
 ```
 This shows the 1-minute load average of the node.
 
+## Grafana URL
+   ```bash
+   [https://grafana-202525155226-cc-cbcbe5cad7bqepb2.cca.grafana.azure.com/d/6385dfe4b7f54710aa1f748b34ba6738/kubernetes-compute-resources-namespace-pods?var-datasource=defaultazuremonitorworkspace-cca&var-cluster=termcluster&var-namespace=default&orgId=1&refresh=1m&from=1741379101447&to=1741382701447](https://snapshots.raintank.io/dashboard/snapshot/UzVVLsBlFJoflbyl9UKOHNjnAOgNtKcL)
+   ```
+
 ## Acknowledgments
 - [Flask Documentation](https://flask.palletsprojects.com/)
 - [Kubernetes Documentation](https://kubernetes.io/docs/)
 - [Azure AKS Documentation](https://docs.microsoft.com/en-us/azure/aks/)
 
-## Grafana
-   ```bash
-   https://grafana-202525155226-cc-cbcbe5cad7bqepb2.cca.grafana.azure.com/d/6385dfe4b7f54710aa1f748b34ba6738/kubernetes-compute-resources-namespace-pods?var-datasource=defaultazuremonitorworkspace-cca&var-cluster=termcluster&var-namespace=default&orgId=1&refresh=1m&from=1741379101447&to=1741382701447
-   ```
+
