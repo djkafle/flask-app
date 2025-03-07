@@ -1,12 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: backend-service
+  name: finance-backend-service
 spec:
-  type: ClusterIP  # Use ClusterIP for internal access
   selector:
-    app: backend
+    app: finance-backend
   ports:
-    - protocol: TCP
-      port: 5001
-      targetPort: 5001
+  - protocol: TCP
+    port: 8000
+    targetPort: 8000

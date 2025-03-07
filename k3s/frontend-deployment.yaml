@@ -1,20 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
+  name: finance-frontend
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app: frontend
+      app: finance-frontend
   template:
     metadata:
       labels:
-        app: frontend
+        app: finance-frontend
     spec:
       containers:
-        - name: frontend
-          image: dhananjayakafle/app_segregation_frontend:latest
-          imagePullPolicy: Always
-          ports:
-            - containerPort: 5000
+      - name: frontend
+        image: dhananjayakafle/app_segregation_frontend:latest
+        ports:
+        - containerPort: 3000

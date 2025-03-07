@@ -1,20 +1,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backend
+  name: finance-backend
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app: backend
+      app: finance-backend
   template:
     metadata:
       labels:
-        app: backend
+        app: finance-backend
     spec:
       containers:
-        - name: backend
-          image: dhananjayakafle/app_segregation_backend:latest
-          imagePullPolicy: Always
-          ports:
-            - containerPort: 5001
+      - name: backend
+        image: dhananjayakafle/app_segregation_backend:latest
+        env:
+        - name: DB_USERNAME
+          value: finance_user
+        - name: DB_PASSWORD
+          value: db_user
+        - name: DB_HOST
+          value: mysql-finance-service
+        - name: DB_PORT
+          value: "3306"
+        - name: DB_NAME
+          value: finance_db
+        ports:
+        - containerPort: 8000

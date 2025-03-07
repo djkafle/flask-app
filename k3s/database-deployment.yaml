@@ -1,28 +1,46 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: database
+  name: mysql-finance
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: database
+      app: mysql-finance
   template:
     metadata:
       labels:
-        app: database
+        app: mysql-finance
     spec:
       containers:
       - name: mysql
-        image: dhananjayakafle/app_segregation_database:latest
+        image: mysql/mysql-server:latest
         env:
         - name: MYSQL_ROOT_PASSWORD
           value: rootpassword
         - name: MYSQL_DATABASE
-          value: sql_database
+          value: finance_db
         - name: MYSQL_USER
-          value: sqluser
+          value: finance_user
         - name: MYSQL_PASSWORD
-          value: sqlpassword
+          value: db_user
         ports:
         - containerPort: 3306
+        livenessProbe:
+          exec:
+            command:
+            - mysqladmin
+            - ping
+            - -h
+            - localhost
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - mysqladmin
+            - ping
+            - -h
+            - localhost
+          initialDelaySeconds: 5
+          periodSeconds: 10

@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: database-service
+  name: mysql-finance-service
 spec:
   selector:
-    app: database
+    app: mysql-finance
   ports:
   - protocol: TCP
     port: 3306
