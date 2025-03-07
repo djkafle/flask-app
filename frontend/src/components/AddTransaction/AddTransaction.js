@@ -40,12 +40,12 @@ const AddTransaction = ({ editTransactionData, onFormSubmit }) => {
     try {
       if (editTransactionData) {
         await axios.put(
-          `http://127.0.0.1:8000/transactions/${editTransactionData.id}/`,
+          `http://finance-backend-service:8000/transactions/${editTransactionData.id}/`,
           transaction
         );
         alert("Transaction updated successfully!");
       } else {
-        await axios.post("http://127.0.0.1:8000/transactions/", transaction);
+        await axios.post("http://finance-backend-service:8000/transactions/", transaction);
         alert("Transaction added successfully!");
       }
       // Reset the form
