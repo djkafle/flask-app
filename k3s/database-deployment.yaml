@@ -13,16 +13,23 @@ spec:
         app: mysql-finance
     spec:
       containers:
-      - name: mysql
-        image: dhananjayakafle/app_segregation_database:latest
+      - name: mysql-finance
+        image: mysql/mysql-server:latest
         env:
         - name: MYSQL_ROOT_PASSWORD
-          value: rootpassword
+          value: "rootpassword"
         - name: MYSQL_DATABASE
-          value: finance_db
+          value: "finance_db"
         - name: MYSQL_USER
-          value: finance_user
+          value: "finance_user"
         - name: MYSQL_PASSWORD
-          value: db_user
+          value: "db_user"
         ports:
         - containerPort: 3306
+        volumeMounts:
+        - name: init-sql
+          mountPath: /docker-entrypoint-initdb.d
+      volumes:
+      - name: init-sql
+        configMap:
+          name: mysql-init-sql
