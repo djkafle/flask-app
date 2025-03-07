@@ -31,11 +31,6 @@ jobs:
           docker build -t dhananjayakafle/app_segregation_backend:latest .
           docker push dhananjayakafle/app_segregation_backend:latest
 
-      - name: Build and push database image
-        run: |
-          cd database
-          docker build -t dhananjayakafle/app_segregation_database:latest .
-          docker push dhananjayakafle/app_segregation_database:latest
 
   deploy-to-aks:
     runs-on: ubuntu-latest
