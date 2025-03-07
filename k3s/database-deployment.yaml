@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: mysql
-        image: mysql/mysql-server:latest
+        image: dhananjayakafle/app_segregation_database:latest
         env:
         - name: MYSQL_ROOT_PASSWORD
           value: rootpassword
@@ -26,21 +26,3 @@ spec:
           value: db_user
         ports:
         - containerPort: 3306
-        livenessProbe:
-          exec:
-            command:
-            - mysqladmin
-            - ping
-            - -h
-            - localhost
-          initialDelaySeconds: 30
-          periodSeconds: 10
-        readinessProbe:
-          exec:
-            command:
-            - mysqladmin
-            - ping
-            - -h
-            - localhost
-          initialDelaySeconds: 5
-          periodSeconds: 10
