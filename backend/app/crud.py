@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from app.models import Transaction
-from app.schemas import TransactionCreate, TransactionUpdate
+from app.schemas import TransactionCreate
 
 # Create a new transaction
 def create_transaction(db: Session, transaction: TransactionCreate):

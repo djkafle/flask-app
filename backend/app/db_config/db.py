@@ -28,14 +28,13 @@ def get_db():
     finally:
         db.close()
 def init_db():
-    # Creates tables in the database
     try:
         with engine.connect() as connection:
             result = connection.execute(text("SELECT 1"))
-            logger.info("Connection successful, query result:", {result.fetchone()})
+            logger.info("Connection successful, query result: %s", result.fetchone())
             logger.info("Initializing database...")
             Base.metadata.create_all(bind=engine)
-            logger.info("Database table created!")
+            logger.info("Database tables created!")
     except Exception as e:
-        logger.info(f"Connection failed: {e}")
+        logger.error(f"Connection failed: {e}")
    

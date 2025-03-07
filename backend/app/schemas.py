@@ -3,9 +3,9 @@ from datetime import datetime
 
 # Base schema
 class TransactionBase(BaseModel):
-    type: str  # 'income' or 'expense'
-    category: str
+    user_id: int  # Add user_id
     amount: float
+    category: str
     description: str | None = None
 
 # Create schema
@@ -19,7 +19,7 @@ class TransactionUpdate(TransactionBase):
 # Response schema
 class TransactionResponse(TransactionBase):
     id: int
-    date: datetime
+    created_at: datetime  # Match column name with model
 
     class Config:
         orm_mode = True
