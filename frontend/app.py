@@ -1,28 +1,46 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
 import requests
 
 app = Flask(__name__)
 
 # Backend URL (use the Kubernetes service name)
-BACKEND_URL = "http://backend-service:5001/submit"  # Kubernetes backend service URL
+BACKEND_URL = "http://backend-service:5001"  # Kubernetes backend service URL
 
 @app.route("/")
-def index():
-    return render_template("index.html")
+def home():
+    return redirect(url_for('dashboard'))
+
+@app.route("/dashboard")
+def dashboard():
+    try:
+        # Fetch data from the backend
+        response = requests.get(f"{BACKEND_URL}/users")
+        if response.status_code == 200:
+            users = response.json()
+            return render_template("dashboard.html", users=users)
+        else:
+            return f"Error: Backend returned status code {response.status_code}.", 500
+    except requests.exceptions.RequestException as e:
+        return f"Error: Unable to connect to the backend. {str(e)}", 500
+
+@app.route("/form")
+def form():
+    return render_template("form.html")
 
 @app.route("/submit", methods=["POST"])
 def submit():
-    first_name = request.form.get("first_name")
-    last_name = request.form.get("last_name")
+    name = request.form.get("name")
+    email = request.form.get("email")
 
-    if not first_name or not last_name:
-        return "Error: First name and last name are required.", 400
+    if not name or not email:
+        return "Error: Name and email are required.", 400
 
-    data = {"first_name": first_name, "last_name": last_name}
+    data = {"name": name, "email": email}
     try:
-        response = requests.post(BACKEND_URL, json=data)
+        # Send data to the backend
+        response = requests.post(f"{BACKEND_URL}/submit", json=data)
         if response.status_code == 200:
-            return redirect("/")
+            return redirect(url_for('dashboard'))
         else:
             return f"Error: Backend returned status code {response.status_code}.", 500
     except requests.exceptions.RequestException as e:
