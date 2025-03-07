@@ -69,5 +69,6 @@ jobs:
 
       - name: Restart deployments to pull new images
         run: |
-          kubectl rollout restart deployment/backend
-          kubectl rollout restart deployment/frontend
+          kubectl rollout restart deployment/mysql-finance
+          kubectl rollout restart deployment/finance-backend
+          kubectl rollout restart deployment/finance-frontend
