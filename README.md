@@ -163,6 +163,46 @@ Contributions are welcome! Please follow these steps:
    ```
 5. Open a pull request.
 
+# **Grafana Queries**
+## Overview
+We use Azure Kubernetes Service (AKS) for container orchestration and Azure Monitor to collect logs and metrics. Prometheus scrapes metrics from our applications in AKS, and Grafana queries Prometheus to visualize the data through dashboards.
+This document provides details on the PromQL queries used in this dashboard to monitor CPU, memory, disk, network, and system load.
+
+---
+## 1. CPU Usage Query
+
+```bash
+100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)
+```
+This calculates CPU usage by subtracting idle time from 100%.
+
+## 2. Memory Usage Query
+
+```bash
+(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100
+```
+This shows the percentage of memory used.
+
+## 3. Disk Usage Query
+
+```bash
+100 - (node_filesystem_avail_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"} * 100)
+```
+This calculates the disk usage percentage.
+
+## 4. Network Traffic Query
+
+```bash
+rate(node_network_receive_bytes_total[5m])
+```
+This measures the incoming network traffic rate over the last 5 minutes.
+
+## 5. Load Average Query
+
+```bash
+node_load1
+```
+This shows the 1-minute load average of the node.
 
 ## Acknowledgments
 - [Flask Documentation](https://flask.palletsprojects.com/)
