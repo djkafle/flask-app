@@ -17,7 +17,7 @@ const TransactionsList = () => {
 
   const fetchTransactions = async () => {
     try {
-      const response = await axios.get("http://finance-backend-service:8000/transactions/");
+      const response = await axios.get("http://finance-backend-service.default.svc.cluster.local:8000/transactions/");
       setTransactions(response.data);
       console.log("Transactions:", response.data);
     } catch (error) {
