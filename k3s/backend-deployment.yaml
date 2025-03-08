@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: dhananjayakafle/app_segregation_backend:latest
+        image: dhananjayakafle/app_segregation_backend:stage
         env:
         - name: DB_USERNAME
           value: finance_user
