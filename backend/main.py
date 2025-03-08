@@ -8,7 +8,7 @@ app = FastAPI()
 # CORS middleware to allow frontend requests
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://finance-backend-service:8000"],  # Allow React to access
+    allow_origins=["http://mysql-finance:3306"],  # Allow React to access
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
