@@ -1,6 +1,6 @@
 # Flask MySQL Kubernetes Project
 
-This project demonstrates a simple web application built with **Flask** (Python) and **MySQL**, deployed on **Azure Kubernetes Service (AKS)**. The application allows users to submit their first and last names through a web form, which are then stored in a MySQL database.
+This project demonstrates a simple web application built with **Fast API** (Python),**React** (frontend) and **MySQL**, deployed on **Azure Kubernetes Service (AKS)**. The application allows users to submit their transaction through a web form along with the dashobard view, which are then stored in a MySQL database.
 
 ---
 
@@ -8,16 +8,16 @@ This project demonstrates a simple web application built with **Flask** (Python)
 ## **Features**
 
 1. **Frontend:**
-   - A simple web form to collect user input (first name and last name).
+   - A simple web form to collect user input built in React JS.
    - Styled with CSS for a clean and modern look.
 
 2. **Backend:**
-   - Flask API to handle form submissions.
+   - FAST API to handle form submissions.
    - Connects to a MySQL database to store user data.
 
 3. **Database:**
-   - MySQL database to store user information.
-   - Initialized with a `users` table using `init.sql`.
+   - MySQL database to store transaction information.
+   - Initialized with a `transactions` table using `init.sql`.
 
 4. **Kubernetes Deployment:**
    - Deployed on Azure Kubernetes Service (AKS).
