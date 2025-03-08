@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: dhananjayakafle/app_segregation_frontend:latest
+        image: dhananjayakafle/app_segregation_frontend:dev
         ports:
         - containerPort: 3000
