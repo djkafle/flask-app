@@ -3,7 +3,7 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - master  # Trigger on push to the master branch
+      - dev  # Trigger on push to the master branch
 
 jobs:
   build-and-push:
@@ -22,14 +22,14 @@ jobs:
       - name: Build and push frontend image
         run: |
           cd frontend
-          docker build -t dhananjayakafle/app_segregation_frontend:latest .
-          docker push dhananjayakafle/app_segregation_frontend:latest
+          docker build -t dhananjayakafle/app_segregation_frontend:dev .
+          docker push dhananjayakafle/app_segregation_frontend:dev
 
       - name: Build and push backend image
         run: |
           cd backend
-          docker build -t dhananjayakafle/app_segregation_backend:latest .
-          docker push dhananjayakafle/app_segregation_backend:latest
+          docker build -t dhananjayakafle/app_segregation_backend:dev .
+          docker push dhananjayakafle/app_segregation_backend:dev
 
   deploy-to-aks:
     runs-on: ubuntu-latest
@@ -42,7 +42,7 @@ jobs:
       - name: Log in to Azure
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          creds: ${{ secrets.AZURE_CREDENTIALS1 }}
 
       - name: Install kubectl
         run: |
