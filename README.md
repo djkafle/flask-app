@@ -1,6 +1,6 @@
 # Flask MySQL Kubernetes Project
 
-This project demonstrates a simple web application built with **Fast API** (Python),**React** (frontend) and **MySQL**, deployed on **Azure Kubernetes Service (AKS)**. The application allows users to submit their transaction through a web form along with the dashobard view, which are then stored in a MySQL database.
+This project demonstrates a simple web application named **Personal Finance Tracker** built with **Fast API** (Python),**React** (frontend) and **MySQL**, deployed on **Azure Kubernetes Service (AKS)**. The application allows users to submit their transaction through a web form along with the dashobard view, which are then stored in a MySQL database.
 
 ---
 
@@ -10,10 +10,11 @@ This project demonstrates a simple web application built with **Fast API** (Pyth
 1. **Frontend:**
    - A simple web form to collect user input built in React JS.
    - Styled with CSS for a clean and modern look.
+   - Validate user inputs using JavaScripts.
 
 2. **Backend:**
    - FAST API to handle form submissions.
-   - Connects to a MySQL database to store user data.
+   - Connects to a MySQL database to store and retrieve user data.
 
 3. **Database:**
    - MySQL database to store transaction information.
@@ -28,6 +29,10 @@ This project demonstrates a simple web application built with **Fast API** (Pyth
    - Docker images are built and pushed to Docker Hub.
    - Application is deployed to AKS.
 
+6. **Azure Managed Grafana:**
+   - Azure Monitor to collect logs and metrics.
+   - Prometheus scrapes metrics in AKS.
+   - Grafana queries Prometheus to visualize the data through dashboards.
 ---
 
 ## **Prerequisites**
@@ -143,6 +148,7 @@ The project includes a GitHub Actions workflow (`ci-cd.yml`) to automate the bui
 - **Containerization:** Docker
 - **Orchestration:** Kubernetes (AKS)
 - **CI/CD:** GitHub Actions
+- **Monitoring Cluster:** Azure Monitor with Prometheus and Grafana
 
 ## Contributing
 
