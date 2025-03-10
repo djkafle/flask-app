@@ -36,3 +36,18 @@ def remove_transaction(transaction_id: int, db: Session = Depends(database.get_d
     if not crud.delete_transaction(db, transaction_id):
         raise HTTPException(status_code=404, detail="Transaction not found")
     return {"message": "Transaction deleted"}
+
+# Get Total Balance
+@router.get("/transactions/total_balance")
+def get_total_balance(db: Session = Depends(database.get_db)): 
+    return crud.get_total_balance(db)
+
+# Get Total Expenses
+@router.get("/transactions/total_expenses")
+def get_total_expenses(db: Session = Depends(database.get_db)): 
+    return crud.get_total_expenses(db)
+
+#get recent transactions
+@router.get("/transactions/recent")
+def get_recent_transactions(db: Session = Depends(database.get_db)):
+    return crud.get_recent_transactions(db)

@@ -15,6 +15,7 @@ import {
   PointElement,
   LineElement,
 } from "chart.js";
+import axios from "axios";
 
 const Dashboard = () => {
   ChartJS.register(
@@ -29,40 +30,123 @@ const Dashboard = () => {
     Legend
   );
 
-  const navigate = useNavigate();
-  const recentTransactions = [
-    { id: 1, description: "Grocery", amount: -50 },
-    { id: 2, description: "Salary", amount: 1500 },
-    { id: 3, description: "Electricity Bill", amount: -100 },
-  ];
-
-  const lineData = {
-    labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
+  const navigate = useNavigate();  
+  const [totalBalance, setTotalBalance] = React.useState(0);
+  const [totalExpenses, setTotalExpenses] = React.useState(0);
+  const [recentTransactions, setRecentTransactions] = React.useState([]);
+  const [lineData, setLineData] = React.useState({
+    labels: [],
     datasets: [
       {
         label: "Income",
-        data: [500, 1000, 1500, 2000],
+        data: [],
         borderColor: "green",
         fill: false,
       },
       {
         label: "Expenses",
-        data: [400, 800, 1200, 1600],
+        data: [],
         borderColor: "red",
         fill: false,
       },
     ],
-  };
+  });
 
-  const pieData = {
-    labels: ["Food", "Utilities", "Entertainment"],
+  const [pieData, setPieData] = React.useState({
+    labels: [],
     datasets: [
       {
-        data: [200, 150, 100],
-        backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
+        data: [],
+        backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF", "#FF9F40"],
       },
     ],
-  };
+  });
+
+  //get total balance
+  React.useEffect(() => {
+    axios.get("http://finance-backend-service.default.svc.cluster.local:8000/transactions/transactions/total_balance")
+      .then((response) => {
+        setTotalBalance(response.data);
+      })
+      .catch((error) => {
+        console.error("There was an error fetching the total balance!", error);
+      });
+  }, []);
+
+   //get recent trnsactions
+  React.useEffect(() => {
+    axios.get("http://finance-backend-service.default.svc.cluster.local:8000/transactions/transactions/recent")
+      .then((response) => {
+        setRecentTransactions(response.data);
+      })
+      .catch((error) => {
+        console.error("There was an error fetching the recent transactions!", error);
+      });
+  }, []);
+
+  //get total expenses
+  React.useEffect(() => {
+    axios.get("http://finance-backend-service.default.svc.cluster.local:8000/transactions/transactions/total_expenses")
+      .then((response) => {
+        setTotalExpenses(response.data);
+      })
+      .catch((error) => {
+        console.error("There was an error fetching the total expenses!", error);
+      });
+  }, []);
+
+  // get income and expenses summary for line chart
+
+  React.useEffect(() => {
+    axios.get("http://finance-backend-service.default.svc.cluster.local:8000/transactions")
+      .then((response) => {
+        const labels = response.data.map(item => new Date(item.date).toLocaleDateString());
+        const incomeData = response.data.filter(item => item.type === 'income').map(item => item.amount);
+        const expensesData = response.data.filter(item => item.type === 'expense').map(item => item.amount);
+        setLineData({
+          labels: labels,
+          datasets: [
+            {
+              label: "Income",
+              data: incomeData,
+              borderColor: "green",
+              fill: false,
+            },
+            {
+              label: "Expenses",
+              data: expensesData,
+              borderColor: "red",
+              fill: false,
+            },
+          ],
+        });
+      })
+      .catch((error) => {
+        console.error("There was an error fetching the income and expenses summary!", error);
+      });
+  }, []);
+
+  // get category summary for pie chart
+
+  React.useEffect(() => {
+    axios.get("http://finance-backend-service.default.svc.cluster.local:8000/transactions")
+      .then((response) => {
+        const categories = response.data.map(item => item.category);
+        const amounts = response.data.map(item => item.amount);
+        setPieData({
+          labels: categories,
+          datasets: [
+            {
+              data: amounts,
+              backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF", "#FF9F40"],
+            },
+          ],
+        });
+      })
+      .catch((error) => {
+        console.error("There was an error fetching the category summary!", error);
+      });
+  }, []);
 
   const handleTransactions = () => {
     navigate("/transactions");
@@ -96,26 +180,7 @@ const Dashboard = () => {
         </Button>
       </div>
 
-      {/* <div className="cards-container">
-        <div className="recent-transactions card">
-          <h2>Recent Transactions</h2>
-          <ul>
-            {recentTransactions.map((transaction) => (
-              <li key={transaction.id}>
-                {transaction.description}: ${transaction.amount}
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="expense-summary card">
-          <h2>Expense Summary</h2>
-          <ul>
-            <li>Food: ${expenseSummary.food}</li>
-            <li>Utilities: ${expenseSummary.utilities}</li>
-            <li>Entertainment: ${expenseSummary.entertainment}</li>
-          </ul>
-        </div>
-      </div> */}
+      
       <div style={{ margin: "20px" }}>
         <Grid2 container spacing={2} minHeight={120}>
           <Grid2
@@ -136,7 +201,7 @@ const Dashboard = () => {
                   Total Balance
                 </Typography>
                 <Typography variant="h4" color="primary">
-                  $5,000
+                  ${totalBalance}
                 </Typography>
               </CardContent>
             </Card>
@@ -161,7 +226,7 @@ const Dashboard = () => {
                   Expenses Summary
                 </Typography>
                 <Typography variant="h4" color="error">
-                  $1,200
+                  ${totalExpenses}
                 </Typography>
                 <Typography variant="body2" color="textSecondary">
                   Last 30 days
@@ -188,15 +253,16 @@ const Dashboard = () => {
                 <Typography variant="h6" color="textSecondary">
                   Recent Transactions
                 </Typography>
-                <Typography variant="body1" color="textPrimary">
-                  - $200 (Groceries)
-                </Typography>
-                <Typography variant="body1" color="textPrimary">
-                  - $50 (Transport)
-                </Typography>
-                <Typography variant="body1" color="textPrimary">
-                  + $1,000 (Salary)
-                </Typography>
+                <ul>
+                  {recentTransactions.map((transaction) => (
+                    <li key={transaction.id}>
+                      <Typography variant="body1" color="textPrimary">
+                        - ${transaction.amount} ({transaction.category})
+                      </Typography>
+                    </li>
+                  ))}
+                </ul>
+                
               </CardContent>
             </Card>
           </Grid2>

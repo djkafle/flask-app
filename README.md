@@ -1,6 +1,6 @@
 # Flask MySQL Kubernetes Project
 
-This project demonstrates a simple web application built with **Flask** (Python) and **MySQL**, deployed on **Azure Kubernetes Service (AKS)**. The application allows users to submit their first and last names through a web form, which are then stored in a MySQL database.
+This project demonstrates a simple web application named **Personal Finance Tracker** built with **Fast API** (Python),**React** (frontend) and **MySQL**, deployed on **Azure Kubernetes Service (AKS)**. The application allows users to submit their transaction through a web form along with the dashobard view, which are then stored in a MySQL database.
 
 ---
 
@@ -8,16 +8,17 @@ This project demonstrates a simple web application built with **Flask** (Python)
 ## **Features**
 
 1. **Frontend:**
-   - A simple web form to collect user input (first name and last name).
+   - A simple web form to collect user input built in React JS.
    - Styled with CSS for a clean and modern look.
+   - Validate user inputs using JavaScripts.
 
 2. **Backend:**
-   - Flask API to handle form submissions.
-   - Connects to a MySQL database to store user data.
+   - FAST API to handle form submissions.
+   - Connects to a MySQL database to store and retrieve user data.
 
 3. **Database:**
-   - MySQL database to store user information.
-   - Initialized with a `users` table using `init.sql`.
+   - MySQL database to store transaction information.
+   - Initialized with a `transactions` table using `init.sql`.
 
 4. **Kubernetes Deployment:**
    - Deployed on Azure Kubernetes Service (AKS).
@@ -28,6 +29,10 @@ This project demonstrates a simple web application built with **Flask** (Python)
    - Docker images are built and pushed to Docker Hub.
    - Application is deployed to AKS.
 
+6. **Azure Managed Grafana:**
+   - Azure Monitor to collect logs and metrics.
+   - Prometheus scrapes metrics in AKS.
+   - Grafana queries Prometheus to visualize the data through dashboards.
 ---
 
 ## **Prerequisites**
@@ -143,6 +148,7 @@ The project includes a GitHub Actions workflow (`ci-cd.yml`) to automate the bui
 - **Containerization:** Docker
 - **Orchestration:** Kubernetes (AKS)
 - **CI/CD:** GitHub Actions
+- **Monitoring Cluster:** Azure Monitor with Prometheus and Grafana
 
 ## Contributing
 
@@ -163,8 +169,55 @@ Contributions are welcome! Please follow these steps:
    ```
 5. Open a pull request.
 
+# **Grafana Queries**
+## Overview
+We use Azure Kubernetes Service (AKS) for container orchestration and Azure Monitor to collect logs and metrics. Prometheus scrapes metrics from our applications in AKS, and Grafana queries Prometheus to visualize the data through dashboards.
+This document provides details on the PromQL queries used in this dashboard to monitor CPU, memory, disk, network, and system load.
+
+---
+## 1. CPU Usage Query
+
+```bash
+100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)
+```
+This calculates CPU usage by subtracting idle time from 100%.
+
+## 2. Memory Usage Query
+
+```bash
+(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100
+```
+This shows the percentage of memory used.
+
+## 3. Disk Usage Query
+
+```bash
+100 - (node_filesystem_avail_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"} * 100)
+```
+This calculates the disk usage percentage.
+
+## 4. Network Traffic Query
+
+```bash
+rate(node_network_receive_bytes_total[5m])
+```
+This measures the incoming network traffic rate over the last 5 minutes.
+
+## 5. Load Average Query
+
+```bash
+node_load1
+```
+This shows the 1-minute load average of the node.
+
+## Grafana URL
+   ```bash
+   https://snapshots.raintank.io/dashboard/snapshot/FSNMBhkU1aa9iEojGEvDFB1EwRhlcUfb
+   ```
 
 ## Acknowledgments
 - [Flask Documentation](https://flask.palletsprojects.com/)
 - [Kubernetes Documentation](https://kubernetes.io/docs/)
 - [Azure AKS Documentation](https://docs.microsoft.com/en-us/azure/aks/)
+
+

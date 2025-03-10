@@ -8,7 +8,7 @@ app = FastAPI()
 # CORS middleware to allow frontend requests
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://finance-frontend-service:3000"],  # Allow React to access
+    allow_origins=["http://finance-frontend-service:3000","http://130.107.152.76:80",],  # Allow React to access
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
