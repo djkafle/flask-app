@@ -4,10 +4,13 @@ import TransactionsList from "./components/TransactionList/TransactionsList";
 import Layout from "./components/Layout";
 import Dashboard from "./components/Dashboard/Dashboard";
 import "./index.css";
+import { ToastContainer } from "react-toastify";
+
 
 const App = () => {
   return (
     <div>
+      <ToastContainer />
       <Routes>
         {/* Wrap all routes with the Layout component */}
         <Route element={<Layout />}>
