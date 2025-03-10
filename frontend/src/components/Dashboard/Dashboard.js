@@ -31,6 +31,8 @@ const Dashboard = () => {
 
   const navigate = useNavigate();  
   const [totalBalance, setTotalBalance] = React.useState(0);
+  const [totalExpenses, setTotalExpenses] = React.useState(0);
+  const [recentTransactions, setRecentTransactions] = React.useState([]);
 
   //get total balance
   React.useEffect(() => {
@@ -40,6 +42,28 @@ const Dashboard = () => {
       })
       .catch((error) => {
         console.error("There was an error fetching the total balance!", error);
+      });
+  }, []);
+
+   //get recent trnsactions
+   React.useEffect(() => {
+    axios.get("http://127.0.0.1:8000/transactions/transactions/recent")
+      .then((response) => {
+        setRecentTransactions(response.data);
+      })
+      .catch((error) => {
+        console.error("There was an error fetching the recent transactions!", error);
+      });
+  }, []);
+
+  //get total expenses
+  React.useEffect(() => {
+    axios.get("http://127.0.0.1:8000/transactions/transactions/total_expenses")
+      .then((response) => {
+        setTotalExpenses(response.data);
+      })
+      .catch((error) => {
+        console.error("There was an error fetching the total expenses!", error);
       });
   }, []);
 
@@ -149,7 +173,7 @@ const Dashboard = () => {
                   Expenses Summary
                 </Typography>
                 <Typography variant="h4" color="error">
-                  $1,200
+                  ${totalExpenses}
                 </Typography>
                 <Typography variant="body2" color="textSecondary">
                   Last 30 days
@@ -176,15 +200,16 @@ const Dashboard = () => {
                 <Typography variant="h6" color="textSecondary">
                   Recent Transactions
                 </Typography>
-                <Typography variant="body1" color="textPrimary">
-                  - $200 (Groceries)
-                </Typography>
-                <Typography variant="body1" color="textPrimary">
-                  - $50 (Transport)
-                </Typography>
-                <Typography variant="body1" color="textPrimary">
-                  + $1,000 (Salary)
-                </Typography>
+                <ul>
+                  {recentTransactions.map((transaction) => (
+                    <li key={transaction.id}>
+                      <Typography variant="body1" color="textPrimary">
+                        - ${transaction.amount} ({transaction.category})
+                      </Typography>
+                    </li>
+                  ))}
+                </ul>
+                
               </CardContent>
             </Card>
           </Grid2>
