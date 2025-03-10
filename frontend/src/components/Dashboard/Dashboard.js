@@ -29,12 +29,19 @@ const Dashboard = () => {
     Legend
   );
 
-  const navigate = useNavigate();
-  const recentTransactions = [
-    { id: 1, description: "Grocery", amount: -50 },
-    { id: 2, description: "Salary", amount: 1500 },
-    { id: 3, description: "Electricity Bill", amount: -100 },
-  ];
+  const navigate = useNavigate();  
+  const [totalBalance, setTotalBalance] = React.useState(0);
+
+  //get total balance
+  React.useEffect(() => {
+    axios.get("http://finance-backend-service.default.svc.cluster.local:8000/transactions/transactions/total_balance")
+      .then((response) => {
+        setTotalBalance(response.data);
+      })
+      .catch((error) => {
+        console.error("There was an error fetching the total balance!", error);
+      });
+  }, []);
 
   const lineData = {
     labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
@@ -96,26 +103,7 @@ const Dashboard = () => {
         </Button>
       </div>
 
-      {/* <div className="cards-container">
-        <div className="recent-transactions card">
-          <h2>Recent Transactions</h2>
-          <ul>
-            {recentTransactions.map((transaction) => (
-              <li key={transaction.id}>
-                {transaction.description}: ${transaction.amount}
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="expense-summary card">
-          <h2>Expense Summary</h2>
-          <ul>
-            <li>Food: ${expenseSummary.food}</li>
-            <li>Utilities: ${expenseSummary.utilities}</li>
-            <li>Entertainment: ${expenseSummary.entertainment}</li>
-          </ul>
-        </div>
-      </div> */}
+      
       <div style={{ margin: "20px" }}>
         <Grid2 container spacing={2} minHeight={120}>
           <Grid2
@@ -136,7 +124,7 @@ const Dashboard = () => {
                   Total Balance
                 </Typography>
                 <Typography variant="h4" color="primary">
-                  $5,000
+                  ${totalBalance}
                 </Typography>
               </CardContent>
             </Card>
