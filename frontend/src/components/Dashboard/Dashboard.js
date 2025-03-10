@@ -15,6 +15,7 @@ import {
   PointElement,
   LineElement,
 } from "chart.js";
+import axios from "axios";
 
 const Dashboard = () => {
   ChartJS.register(
@@ -33,6 +34,33 @@ const Dashboard = () => {
   const [totalBalance, setTotalBalance] = React.useState(0);
   const [totalExpenses, setTotalExpenses] = React.useState(0);
   const [recentTransactions, setRecentTransactions] = React.useState([]);
+  const [lineData, setLineData] = React.useState({
+    labels: [],
+    datasets: [
+      {
+        label: "Income",
+        data: [],
+        borderColor: "green",
+        fill: false,
+      },
+      {
+        label: "Expenses",
+        data: [],
+        borderColor: "red",
+        fill: false,
+      },
+    ],
+  });
+
+  const [pieData, setPieData] = React.useState({
+    labels: [],
+    datasets: [
+      {
+        data: [],
+        backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF", "#FF9F40"],
+      },
+    ],
+  });
 
   //get total balance
   React.useEffect(() => {
@@ -46,8 +74,8 @@ const Dashboard = () => {
   }, []);
 
    //get recent trnsactions
-   React.useEffect(() => {
-    axios.get("http://127.0.0.1:8000/transactions/transactions/recent")
+  React.useEffect(() => {
+    axios.get("http://finance-backend-service.default.svc.cluster.local:8000/transactions/transactions/recent")
       .then((response) => {
         setRecentTransactions(response.data);
       })
@@ -58,7 +86,7 @@ const Dashboard = () => {
 
   //get total expenses
   React.useEffect(() => {
-    axios.get("http://127.0.0.1:8000/transactions/transactions/total_expenses")
+    axios.get("http://finance-backend-service.default.svc.cluster.local:8000/transactions/transactions/total_expenses")
       .then((response) => {
         setTotalExpenses(response.data);
       })
@@ -67,33 +95,58 @@ const Dashboard = () => {
       });
   }, []);
 
-  const lineData = {
-    labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
-    datasets: [
-      {
-        label: "Income",
-        data: [500, 1000, 1500, 2000],
-        borderColor: "green",
-        fill: false,
-      },
-      {
-        label: "Expenses",
-        data: [400, 800, 1200, 1600],
-        borderColor: "red",
-        fill: false,
-      },
-    ],
-  };
+  // get income and expenses summary for line chart
 
-  const pieData = {
-    labels: ["Food", "Utilities", "Entertainment"],
-    datasets: [
-      {
-        data: [200, 150, 100],
-        backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
-      },
-    ],
-  };
+  React.useEffect(() => {
+    axios.get("http://finance-backend-service.default.svc.cluster.local:8000/transactions")
+      .then((response) => {
+        const labels = response.data.map(item => new Date(item.date).toLocaleDateString());
+        const incomeData = response.data.filter(item => item.type === 'income').map(item => item.amount);
+        const expensesData = response.data.filter(item => item.type === 'expense').map(item => item.amount);
+        setLineData({
+          labels: labels,
+          datasets: [
+            {
+              label: "Income",
+              data: incomeData,
+              borderColor: "green",
+              fill: false,
+            },
+            {
+              label: "Expenses",
+              data: expensesData,
+              borderColor: "red",
+              fill: false,
+            },
+          ],
+        });
+      })
+      .catch((error) => {
+        console.error("There was an error fetching the income and expenses summary!", error);
+      });
+  }, []);
+
+  // get category summary for pie chart
+
+  React.useEffect(() => {
+    axios.get("http://finance-backend-service.default.svc.cluster.local:8000/transactions")
+      .then((response) => {
+        const categories = response.data.map(item => item.category);
+        const amounts = response.data.map(item => item.amount);
+        setPieData({
+          labels: categories,
+          datasets: [
+            {
+              data: amounts,
+              backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF", "#FF9F40"],
+            },
+          ],
+        });
+      })
+      .catch((error) => {
+        console.error("There was an error fetching the category summary!", error);
+      });
+  }, []);
 
   const handleTransactions = () => {
     navigate("/transactions");
