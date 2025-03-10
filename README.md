@@ -143,8 +143,8 @@ The project includes a GitHub Actions workflow (`ci-cd.yml`) to automate the bui
 
 ## Technologies Used
 
-- **Frontend:** HTML, CSS, Flask (for templating)
-- **Backend:** Flask (Python)
+- **Frontend:** HTML, CSS, JS(React)
+- **Backend:** FAST API (Python)
 - **Database:** MySQL
 - **Containerization:** Docker
 - **Orchestration:** Kubernetes (AKS)
