@@ -25,11 +25,12 @@ This project demonstrates a simple web application named **Personal Finance Trac
    - Includes deployments and services for the frontend, backend, and database.
 
 5. **CI/CD Pipeline:**
+   - **Pipeline for every environment is separated so that changes in one doesn't affect another.**
    - Automated build and deployment using GitHub Actions.
    - Docker images are built and pushed to Docker Hub.
    - Application is deployed to AKS.
 
-6. **Azure Managed Grafana:**
+7. **Azure Managed Grafana:**
    - Azure Monitor to collect logs and metrics.
    - Prometheus scrapes metrics in AKS.
    - Grafana queries Prometheus to visualize the data through dashboards.
@@ -142,8 +143,8 @@ The project includes a GitHub Actions workflow (`ci-cd.yml`) to automate the bui
 
 ## Technologies Used
 
-- **Frontend:** HTML, CSS, Flask (for templating)
-- **Backend:** Flask (Python)
+- **Frontend:** HTML, CSS, JS(React)
+- **Backend:** FAST API (Python)
 - **Database:** MySQL
 - **Containerization:** Docker
 - **Orchestration:** Kubernetes (AKS)
@@ -219,5 +220,4 @@ This shows the 1-minute load average of the node.
 - [Flask Documentation](https://flask.palletsprojects.com/)
 - [Kubernetes Documentation](https://kubernetes.io/docs/)
 - [Azure AKS Documentation](https://docs.microsoft.com/en-us/azure/aks/)
-
 
