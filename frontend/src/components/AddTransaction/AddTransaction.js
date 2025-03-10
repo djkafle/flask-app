@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import "./AddTransaction.css";
 import PropTypes from "prop-types";
+import { toast } from "react-toastify"; 
 
 const AddTransaction = ({ editTransactionData, onFormSubmit }) => {
   const [type, setType] = useState("expense");
@@ -43,10 +44,10 @@ const AddTransaction = ({ editTransactionData, onFormSubmit }) => {
           `http://finance-backend-service:8000/transactions/${editTransactionData.id}/`,
           transaction
         );
-        alert("Transaction updated successfully!");
+        toast.success("Transaction updated successfully!");
       } else {
         await axios.post("http://finance-backend-service:8000/transactions/", transaction);
-        alert("Transaction added successfully!");
+        toast.success("Transaction added successfully!");
       }
       // Reset the form
       setType("expense");
@@ -56,7 +57,7 @@ const AddTransaction = ({ editTransactionData, onFormSubmit }) => {
       onFormSubmit();
     } catch (error) {
       console.error("Error saving transaction:", error);
-      alert("Error saving transaction");
+      toast.error("Error saving transaction");
     }
   };
 

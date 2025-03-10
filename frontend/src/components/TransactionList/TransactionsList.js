@@ -9,6 +9,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import AddTransaction from "../AddTransaction/AddTransaction";
 import "./TransactionsList.css";
+import { toast } from "react-toastify";
 
 const TransactionsList = () => {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ const TransactionsList = () => {
 
   const fetchTransactions = async () => {
     try {
-      const response = await axios.get("http://finance-backend-service:8000/transactions/");
+      const response = await axios.get("http://finance-backend-service.default.svc.cluster.local:8000/transactions/");
       setTransactions(response.data);
       console.log("Transactions:", response.data);
     } catch (error) {
@@ -41,7 +42,7 @@ const TransactionsList = () => {
   const handleDeleteTransaction = async (id) => {
     try {
       await axios.delete(`http://finance-backend-service:8000/transactions/${id}/`);
-      console.log("Deleted transaction:", id);
+      toast.error("Deleted transaction sucessfully");
       fetchTransactions();
     } catch (error) {
       console.error("Error deleting transaction:", error);
